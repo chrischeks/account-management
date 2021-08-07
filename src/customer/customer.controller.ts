@@ -1,25 +1,37 @@
 import { NextFunction, Response, Request } from 'express';
 import UniversalController from '@/universal/universal.controller';
 import userService from './customer.service';
-import { RequestWithUser } from '@/auth/auth.interface';
-import { CreateCustomerDto } from './customer.dto';
+import { CreateCustomerDTO, AccountOpenDTO, SignInDTO } from './customer.dto';
+import { RequestWithCustomer } from '@/universal/interfaces/request.interface';
 
-class UsersController extends UniversalController {
+class CustomerController extends UniversalController {
   public userService = new userService();
 
-  // public getUserById = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
-  //   try {
-  //     await this.controllerResponseHandler({ statusCode: 200, status: true, message: 'success', data: req.user }, req, res);
-  //   } catch (error) {
-  //     await this.controllerErrorHandler(req, res, error);
-  //     next();
-  //   }
-  // };
-
-  public openAccount = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  public createCustomer = async (req: RequestWithCustomer, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userData: CreateCustomerDto = req.body;
+      const userData: CreateCustomerDTO = req.body;
       const response = await this.userService.processCreateCustomer(userData);
+      await this.controllerResponseHandler(response, req, res);
+    } catch (error) {
+      await this.controllerErrorHandler(req, res, error);
+    }
+  };
+
+  public signIn = async (req: RequestWithCustomer, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: SignInDTO = req.body;
+      const response = await this.userService.processSignIn(userData);
+      await this.controllerResponseHandler(response, req, res);
+    } catch (error) {
+      await this.controllerErrorHandler(req, res, error);
+    }
+  };
+
+  public openAccount = async (req: RequestWithCustomer, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { customer, body } = req;
+      const userData: AccountOpenDTO = body;
+      const response = await this.userService.processAccountOpening(customer, userData);
       await this.controllerResponseHandler(response, req, res);
     } catch (error) {
       await this.controllerErrorHandler(req, res, error);
@@ -27,4 +39,4 @@ class UsersController extends UniversalController {
   };
 }
 
-export default UsersController;
+export default CustomerController;

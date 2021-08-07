@@ -3,23 +3,29 @@ import Route from '@/universal/interfaces/route.interface';
 import authMiddleware from '@/middlewares/auth.middleware';
 import verifyKey from '@/middlewares/verify.middleware';
 import { isAdmin } from '@/middlewares/admin.middleware';
-import UsersController from '@/customer/customer.controller';
+import CustomerController from '@/customer/customer.controller';
 import validationMiddleware from '@/middlewares/validation.middleware';
-import { CreateCustomerDto } from './customer.dto';
+import { CreateCustomerDTO, AccountOpenDTO, SignInDTO } from './customer.dto';
 
 class CustomerRoute implements Route {
-  public userPath = '/account';
+  public userPath = '/customer';
 
   public router = Router();
-  public usersController = new UsersController();
+  public usersController = new CustomerController();
 
   constructor() {
     this.initializeRoutes();
   }
 
   private initializeRoutes() {
-    // this.router.get(`${this.userPath}`, verifyKey, authMiddleware, this.usersController.getUserById);
-    this.router.post(`${this.userPath}/open`, validationMiddleware(CreateCustomerDto, 'body'), this.usersController.openAccount);
+    this.router.post(
+      `${this.userPath}/account/open-account`,
+      authMiddleware,
+      validationMiddleware(AccountOpenDTO, 'body'),
+      this.usersController.openAccount,
+    );
+    this.router.post(`${this.userPath}/create`, validationMiddleware(CreateCustomerDTO, 'body'), this.usersController.createCustomer);
+    this.router.post(`${this.userPath}/signIn`, validationMiddleware(SignInDTO, 'body'), this.usersController.signIn);
   }
 }
 

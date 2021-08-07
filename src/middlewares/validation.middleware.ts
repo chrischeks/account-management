@@ -1,3 +1,4 @@
+import { RequestWithCustomer } from '@/universal/interfaces/request.interface';
 import UniversalController from '@/universal/universal.controller';
 import { plainToClass } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
@@ -10,7 +11,7 @@ const validationMiddleware = (
   whitelist = true,
   forbidNonWhitelisted = true,
 ): RequestHandler => {
-  return (req, res, next) => {
+  return (req: RequestWithCustomer, res, next) => {
     validate(plainToClass(type, req[value]), { skipMissingProperties, whitelist, forbidNonWhitelisted }).then((errors: ValidationError[]) => {
       if (errors.length > 0) {
         const message = errors.map((error: ValidationError) => Object.values(error.constraints)).join(', ');

@@ -1,21 +1,21 @@
-import { RequestWithUser } from '@/auth/auth.interface';
 import IResponse from '@/universal/interfaces/response.interface';
 import { logger } from '@/utils/logger';
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { RequestWithCustomer } from './interfaces/request.interface';
 
 class UniversalController {
-  protected controllerErrorHandler = async (req: Request, res: Response, error) => {
-    const { originalUrl, method, ip } = req;
-    logger.log('error', `URL:${originalUrl} - METHOD:${method} - IP:${ip} - ERROR:${error}`);
+  protected controllerErrorHandler = async (req: RequestWithCustomer, res: Response, error) => {
+    const { originalUrl, method, ip, customer, body } = req;
+    logger.log('error', `URL:${originalUrl} - METHOD:${method} - IP:${ip} - ERROR:${error}- Email:${body.email || customer?._id || 'login'}`);
     return res.status(500).json({ status: false, message: 'Operation was not successful, please contact support.', data: null });
   };
 
-  public controllerResponseHandler = async (response: IResponse, req: RequestWithUser, res: Response) => {
+  public controllerResponseHandler = async (response: IResponse, req: RequestWithCustomer, res: Response) => {
     const { statusCode, status, message, data } = response;
-    const { originalUrl, method, ip, body, user } = req;
+    const { originalUrl, method, ip, body, customer } = req;
     logger.log(
       `${status === true ? 'info' : 'warn'}`,
-      `URL:${originalUrl} - METHOD:${method} - IP:${ip}- StatusCode : ${statusCode} - Message : ${message} - Email:${body.email || user._id}`,
+      `URL:${originalUrl} - METHOD:${method} - IP:${ip}- StatusCode : ${statusCode} - Message : ${message} - Email:${body.email || customer?._id}`,
     );
     return res.status(statusCode).json({ status, message, data });
   };
