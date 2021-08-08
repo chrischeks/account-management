@@ -1,9 +1,9 @@
 import { NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { DataStoredInToken } from '@/@universal/interfaces/token.interface';
 import { RequestWithCustomer } from '@/@universal/interfaces/request.interface';
 import customerModel from '@/customer/customer.model';
-import UniversalController from '../universal.controller';
+import UniversalController from '../controller/universal.controller';
+import { DataStoredInToken } from '@/auth/auth.interface';
 
 const { JWTSECRET } = process.env;
 

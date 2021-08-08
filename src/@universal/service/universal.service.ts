@@ -1,6 +1,4 @@
-import Status from '@/@universal/enums/status.enum';
 import IResponse from '@/@universal/interfaces/response.interface';
-import { logger } from '@/@universal/logger';
 
 class UniversalService {
   public successResponse = (data = null): IResponse => {

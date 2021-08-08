@@ -1,7 +1,7 @@
 import IResponse from '@/@universal/interfaces/response.interface';
-import { logger } from '@/@universal/logger';
 import { Response } from 'express';
-import { RequestWithCustomer } from './interfaces/request.interface';
+import { RequestWithCustomer } from '../interfaces/request.interface';
+import { logger } from '../logger/logger';
 
 class UniversalController {
   protected controllerErrorHandler = async (req: RequestWithCustomer, res: Response, error) => {

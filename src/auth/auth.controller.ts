@@ -3,7 +3,7 @@ import { RequestWithCustomer } from '@/@universal/interfaces/request.interface';
 import AuthService from './auth.service';
 import { SignInDTO } from './auth.dto';
 import { CreateCustomerDTO } from '@/@universal/dto/customer.dto';
-import UniversalController from '@/@universal/universal.controller';
+import UniversalController from '@/@universal/controller/universal.controller';
 
 class AuthController extends UniversalController {
   public authService = new AuthService();

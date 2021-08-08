@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import UniversalService from '@/@universal/universal.service';
+import UniversalService from '@/@universal/service/universal.service';
 import jwt from 'jsonwebtoken';
 import customerModel from '@/customer/customer.model';
 import { DataStoredInToken, ISignIn, TokenData } from './auth.interface';

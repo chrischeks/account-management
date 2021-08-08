@@ -2,7 +2,7 @@ import { NextFunction, Response } from 'express';
 import { AccountOpenDTO } from './customer.dto';
 import { RequestWithCustomer } from '@/@universal/interfaces/request.interface';
 import CustomerService from './customer.service';
-import UniversalController from '@/@universal/universal.controller';
+import UniversalController from '@/@universal/controller/universal.controller';
 
 class CustomerController extends UniversalController {
   protected customerService = new CustomerService();

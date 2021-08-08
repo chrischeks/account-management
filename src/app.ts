@@ -8,9 +8,9 @@ import morgan from 'morgan';
 import compression from 'compression';
 import Routes from '@/@universal/interfaces/route.interface';
 import errorMiddleware from '@/@universal/middlewares/error.middleware';
-import { logger, stream } from '@/@universal/logger';
 import notFound from './@universal/middlewares/not-found.middleware';
-import { connectMongo } from './@universal/mongo.database';
+import { connectMongo } from './@universal/database/mongo.database';
+import { logger, stream } from './@universal/logger/logger';
 
 class App {
   public app: express.Application;

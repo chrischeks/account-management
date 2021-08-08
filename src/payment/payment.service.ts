@@ -1,5 +1,5 @@
 import IResponse from '@/@universal/interfaces/response.interface';
-import UniversalService from '@/@universal/universal.service';
+import UniversalService from '@/@universal/service/universal.service';
 import { ITransfer } from './payment.interface';
 import mongoose from 'mongoose';
 import customerModel from '@/customer/customer.model';

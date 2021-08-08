@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from 'express';
 import { RequestWithCustomer } from '@/@universal/interfaces/request.interface';
 import PaymentService from './payment.service';
 import { TransferDTO } from './payment.dto';
-import UniversalController from '@/@universal/universal.controller';
+import UniversalController from '@/@universal/controller/universal.controller';
 
 class PaymentController extends UniversalController {
   paymentService = new PaymentService();
