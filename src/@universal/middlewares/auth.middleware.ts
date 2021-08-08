@@ -11,7 +11,7 @@ const authMiddleware = async (req: RequestWithCustomer, res: Response, next: Nex
   const auth = { status: false, statusCode: 401 };
   const controller = new UniversalController();
   try {
-    const Authorization = req.cookies['Authorization'] || req.header('Authorization')?.split('Bearer ')[1] || null;
+    const Authorization = req.header('Authorization')?.split('Bearer ')[1] || null;
 
     if (Authorization) {
       const secretKey: string = JWTSECRET;
@@ -29,6 +29,8 @@ const authMiddleware = async (req: RequestWithCustomer, res: Response, next: Nex
       await controller.controllerResponseHandler({ ...auth, message: 'Authentication token missing.' }, req, res);
     }
   } catch (error) {
+    console.log(error, 'nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+
     await controller.controllerResponseHandler({ ...auth, message: 'Wrong/expired authentication token.' }, req, res);
   }
 };

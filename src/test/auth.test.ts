@@ -37,11 +37,8 @@ describe('Testing Auth', () => {
       const app = new App([authRoute]);
       const { body, status } = await request(app.getServer()).post(`${basePath}${authRoute.authPath}/signUp`).send(userData);
       expect(status).toBe(200);
-      expect(body).toEqual({
-        data: null,
-        message: 'success',
-        status: true,
-      });
+      expect(body.status).toBe(true);
+      expect(body.data.accountNumber).toBeDefined();
     });
   });
 
@@ -58,7 +55,7 @@ describe('Testing Auth', () => {
       const app = new App([authRoute]);
       const { body, status } = await request(app.getServer()).post(`${basePath}${authRoute.authPath}/signIn`).send(baseData);
       expect(status).toBe(200);
-      expect(body.data).toHaveProperty('tokenData');
+      expect(body.data.tokenData).toBeDefined();
     });
   });
 });

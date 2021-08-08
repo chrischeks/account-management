@@ -7,8 +7,6 @@ import { ICustomer } from '@/@universal/interfaces/customer.interface';
 import { CreateCustomerDTO } from '@/@universal/dto/customer.dto';
 import config from 'config';
 
-const { JWTSECRET } = process.env;
-
 class AuthService extends UniversalService {
   public customer = customerModel;
 
@@ -20,7 +18,7 @@ class AuthService extends UniversalService {
     const account = [{ accountType: 'mono-savings', accountNumber: await this.generateAccountNumber() }];
     const createUser: ICustomer = await this.customer.create({ pin, password, account, name, email });
     if (!createUser) return this.failureResponse('Signup failed');
-    return this.successResponse();
+    return this.successResponse(account[0]);
   };
 
   public processSignIn = async (customerData: ISignIn) => {
@@ -38,7 +36,7 @@ class AuthService extends UniversalService {
 
   public async createToken(customer: ICustomer): Promise<TokenData> {
     const dataStoredInToken: DataStoredInToken = { _id: customer._id };
-    const secretKey: string = config.get('secretKey');
+    const secretKey: string = config.get('config.secretKey');
     const expiresIn: string = '1d';
     return { expiresIn, token: jwt.sign(dataStoredInToken, secretKey, { expiresIn }) };
   }

@@ -7,7 +7,7 @@ import { AccountOpenDTO } from './customer.dto';
 import { AccountNumberDTO } from '@/@universal/dto/account.dto';
 
 class CustomerRoute implements Route {
-  public userPath = '/customer';
+  public path = '/customer';
 
   public router = Router();
   public customerController = new CustomerController();
@@ -18,13 +18,13 @@ class CustomerRoute implements Route {
 
   private initializeRoutes() {
     this.router.post(
-      `${this.userPath}/account/open-account`,
+      `${this.path}/account/open-account`,
       authMiddleware,
       validationMiddleware(AccountOpenDTO, 'body'),
       this.customerController.openAccount,
     );
     this.router.get(
-      `${this.userPath}/name-enquiry/:accountNumber`,
+      `${this.path}/name-enquiry/:accountNumber`,
       authMiddleware,
       validationMiddleware(AccountNumberDTO, 'params'),
       this.customerController.getCustomerByAccountNumber,

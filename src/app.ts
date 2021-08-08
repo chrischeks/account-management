@@ -7,28 +7,49 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
+import { connect, set } from 'mongoose';
 import morgan from 'morgan';
 import compression from 'compression';
 import Routes from '@/@universal/interfaces/route.interface';
 import errorMiddleware from '@/@universal/middlewares/error.middleware';
 import notFound from './@universal/middlewares/not-found.middleware';
-import { connectMongo } from './@universal/database/mongo.database';
+import { dbConnection } from './@universal/database/mongo.database';
 import { logger, stream } from './@universal/logger/logger';
+import rateLimit = require('express-rate-limit');
+import MongoStore = require('rate-limit-mongo');
+import config from 'config';
+const { MONGODB_URL, PORT, limiterConfig } = config.get('config');
+const { max, expireTimeMs } = limiterConfig;
 
 class App {
   public app: express.Application;
   public port: string | number;
   public env: string;
+  private limiter: any;
 
   constructor(routes: Routes[]) {
     this.app = express();
-    this.port = process.env.PORT || 3111;
+    this.port = PORT || 3111;
     this.env = process.env.NODE_ENV || 'development';
-
+    this.connectToDatabase();
+    this.initializeRatelimiter();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
     this.initializeRouteNotFound();
+  }
+
+  private initializeRatelimiter() {
+    this.limiter = rateLimit({
+      store: new MongoStore({
+        uri: MONGODB_URL,
+        expireTimeMs: Number(expireTimeMs),
+        errorHandler: console.error.bind(null, 'rate-limit-mongo'),
+      }),
+      max: Number(max),
+      windowMs: Number(expireTimeMs),
+      message: `You have made too many server requests, try again in an hour`,
+    });
   }
 
   public getServer() {
@@ -36,20 +57,20 @@ class App {
   }
 
   public listen() {
-    if (this.env !== 'test') {
-      connectMongo()
-        .then(connect => {
-          this.app.listen(this.port, () => {
-            logger.info(`=================================`);
-            logger.info(`======= ENV: ${this.env} =======`);
-            logger.info(`🚀 App listening on the port ${this.port}`);
-            logger.info(`=================================`);
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    this.app.listen(this.port, () => {
+      logger.info(`=================================`);
+      logger.info(`======= ENV: ${this.env} =======`);
+      logger.info(`🚀 App listening on the port ${this.port}`);
+      logger.info(`=================================`);
+    });
+  }
+
+  private connectToDatabase() {
+    if (this.env !== 'production') {
+      set('debug', true);
     }
+
+    connect(dbConnection.url, dbConnection.options);
   }
 
   private initializeMiddlewares() {
@@ -60,7 +81,7 @@ class App {
       this.app.use(morgan('dev', { stream }));
       this.app.use(cors({ origin: true, credentials: true }));
     }
-
+    this.app.use(this.limiter);
     this.app.use(hpp());
     this.app.use(helmet());
     this.app.use(compression());

@@ -5,7 +5,7 @@ import CustomerService from './customer.service';
 import UniversalController from '@/@universal/controller/universal.controller';
 
 class CustomerController extends UniversalController {
-  protected customerService = new CustomerService();
+  public customerService = new CustomerService();
 
   public openAccount = async (req: RequestWithCustomer, res: Response, next: NextFunction): Promise<void> => {
     try {

@@ -4,19 +4,19 @@ import { AccountOpenDTO } from './customer.dto';
 import customerModel from './customer.model';
 
 class CustomerService extends UniversalService {
-  private customer = customerModel;
+  public customer = customerModel;
 
   public processAccountOpening = async (customer: ICustomer, body: AccountOpenDTO) => {
+    console.log('nnnnnnnnnnnnnnnnn');
+
     let { email, account } = customer;
     const { accountType } = body;
     const found = account.find(x => x.accountType === accountType);
     if (found) return this.failureResponse(`You already have a ${accountType} account`);
-    const createAccount = await this.customer.updateOne(
-      { email },
-      { $push: { account: { accountNumber: await this.generateAccountNumber(), accountType } } },
-    );
+    const newAccount = { accountNumber: await this.generateAccountNumber(), accountType };
+    const createAccount = await this.customer.updateOne({ email }, { $push: { account: newAccount } });
     if (createAccount.nModified === 0) return this.failureResponse('Account opening failed');
-    return this.successResponse();
+    return this.successResponse(newAccount);
   };
 
   public processGetCustomerByAccountNumber = async (accountNumber: string) => {
