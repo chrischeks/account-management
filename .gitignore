@@ -103,5 +103,4 @@ dist
 # TernJS port file
 .tern-port
 
-src/configs/production.json
 TODO

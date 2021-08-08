@@ -6,6 +6,8 @@ import { logger } from '../logger/logger';
 class UniversalController {
   protected controllerErrorHandler = async (req: RequestWithCustomer, res: Response, error) => {
     const { originalUrl, method, ip, customer, body } = req;
+    console.log(error, 'errorrrrrrrrrrrrrrrrrrrrrrrr');
+
     logger.log('error', `URL:${originalUrl} - METHOD:${method} - IP:${ip} - ERROR:${error}- Identifier:${customer?.email || body?.email}`);
     return res.status(500).json({ status: false, message: 'Operation was not successful, please contact support.', data: null });
   };

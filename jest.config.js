@@ -9,5 +9,4 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/src' }),
-  setupFilesAfterEnv: ['./jest.setup.redis-mock.js'],
 };

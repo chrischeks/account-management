@@ -5,10 +5,12 @@ import customerModel from '@/customer/customer.model';
 import { DataStoredInToken, ISignIn, TokenData } from './auth.interface';
 import { ICustomer } from '@/@universal/interfaces/customer.interface';
 import { CreateCustomerDTO } from '@/@universal/dto/customer.dto';
+import config from 'config';
+
 const { JWTSECRET } = process.env;
 
 class AuthService extends UniversalService {
-  protected customer = customerModel;
+  public customer = customerModel;
 
   public processCreateCustomer = async (customer: CreateCustomerDTO) => {
     let { pin, password, email, name } = customer;
@@ -24,7 +26,9 @@ class AuthService extends UniversalService {
   public processSignIn = async (customerData: ISignIn) => {
     let { password, email } = customerData;
     email = email.toLowerCase();
-    const foundUser: ICustomer = await this.customer.findOne({ email });
+    console.log('here');
+
+    const foundUser: ICustomer = await this.customer.findOne({ email }, { password: 1, _id: 0 });
     if (!foundUser) return this.failureResponse('Invalid email or password.');
     const isPasswordMatching: boolean = await bcrypt.compare(password, foundUser.password);
     if (!isPasswordMatching) return this.failureResponse('Invalid mobile number or password.');
@@ -34,7 +38,7 @@ class AuthService extends UniversalService {
 
   public async createToken(customer: ICustomer): Promise<TokenData> {
     const dataStoredInToken: DataStoredInToken = { _id: customer._id };
-    const secretKey: string = JWTSECRET;
+    const secretKey: string = config.get('secretKey');
     const expiresIn: string = '1d';
     return { expiresIn, token: jwt.sign(dataStoredInToken, secretKey, { expiresIn }) };
   }

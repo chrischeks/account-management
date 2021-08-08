@@ -1,3 +1,6 @@
+import path from 'path';
+process.env['NODE_CONFIG_DIR'] = path.join(__dirname, '/@universal/configs');
+
 import 'reflect-metadata';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
