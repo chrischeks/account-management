@@ -6,7 +6,7 @@ import { RequestWithCustomer } from './interfaces/request.interface';
 class UniversalController {
   protected controllerErrorHandler = async (req: RequestWithCustomer, res: Response, error) => {
     const { originalUrl, method, ip, customer, body } = req;
-    logger.log('error', `URL:${originalUrl} - METHOD:${method} - IP:${ip} - ERROR:${error}- Email:${body.email || customer?._id || 'login'}`);
+    logger.log('error', `URL:${originalUrl} - METHOD:${method} - IP:${ip} - ERROR:${error}- Identifier:${customer?.email || body?.email}`);
     return res.status(500).json({ status: false, message: 'Operation was not successful, please contact support.', data: null });
   };
 
@@ -15,7 +15,9 @@ class UniversalController {
     const { originalUrl, method, ip, body, customer } = req;
     logger.log(
       `${status === true ? 'info' : 'warn'}`,
-      `URL:${originalUrl} - METHOD:${method} - IP:${ip}- StatusCode : ${statusCode} - Message : ${message} - Email:${body.email || customer?._id}`,
+      `URL:${originalUrl} - METHOD:${method} - IP:${ip}- StatusCode : ${statusCode} - Message : ${message} - Identifier:${
+        customer?.email || body?.email
+      }`,
     );
     return res.status(statusCode).json({ status, message, data });
   };

@@ -4,7 +4,7 @@ import { getRepository } from 'typeorm';
 // import { User } from '@/customer/user.interface';
 import Status from '@/enums/status.enum';
 import UniversalService from '@/universal/universal.service';
-import { CreateCustomerDTO, AccountOpenDTO } from './customer.dto';
+import { CreateCustomerDTO, AccountOpenDTO, GetCustomerDTO } from './customer.dto';
 import Customer from './customer.schema';
 import { IAccountOpen, ICustomer, ISignIn } from './customer.interface';
 import { DataStoredInToken, TokenData } from '@/universal/interfaces/token.interface';
@@ -41,9 +41,6 @@ class CustomerService extends UniversalService {
     const expiresIn: string = '1d';
     return { expiresIn, token: jwt.sign(dataStoredInToken, secretKey, { expiresIn }) };
   }
-  // public createCookie(tokenData: TokenData): string {
-  //   return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn};`;
-  // }
 
   private generateAccountNumber = async (): Promise<string> => {
     const dateLast5 = `${Date.now()}`.substring(8);
@@ -53,12 +50,8 @@ class CustomerService extends UniversalService {
 
   public processAccountOpening = async (customer: ICustomer, body: AccountOpenDTO) => {
     let { email, account } = customer;
-    console.log(email, account, 'email, account');
-
     const { accountType } = body;
     const found = account.find(x => x.accountType === accountType);
-    console.log(found);
-
     if (found) return this.failureResponse(`You already have a ${accountType} account`);
     const createAccount = await this.customer.updateOne(
       { email },
@@ -66,6 +59,12 @@ class CustomerService extends UniversalService {
     );
     if (createAccount.nModified === 0) return this.failureResponse('Account opening failed');
     return this.successResponse();
+  };
+
+  public processGetCustomerByAccountNumber = async (accountNumber: string) => {
+    const customer = await this.customer.findOne({ 'account.accountNumber': accountNumber }, { name: 1, _id: 0 });
+    if (!customer) return this.failureResponse('Invalid account number');
+    return this.successResponse({ customerName: customer.name });
   };
 }
 
