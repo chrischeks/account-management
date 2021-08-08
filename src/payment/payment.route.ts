@@ -7,7 +7,7 @@ import CustomerController from '@/customer/customer.controller';
 import validationMiddleware from '@/middlewares/validation.middleware';
 import PaymentController from './payment.controller';
 import { TransferDTO } from './payment.dto';
-import { AccountNumberDTO } from '@/universal/universal.dto';
+import { AccountNumberDTO } from '@/universal/dto/account.dto';
 
 class PaymentRoute implements Route {
   public paymentPath = '/payment';

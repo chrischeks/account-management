@@ -2,12 +2,12 @@ import IResponse from '@/universal/interfaces/response.interface';
 import UniversalService from '@/universal/universal.service';
 import { ITransfer } from './payment.interface';
 import mongoose from 'mongoose';
-import Customer from '@/customer/customer.schema';
-import { ICustomer } from '@/customer/customer.interface';
+import customerModel from '@/customer/customer.model';
 import Payment from './payment.schema';
+import { ICustomer } from '@/universal/interfaces/customer.interface';
 
 class PaymentService extends UniversalService {
-  private customer = Customer;
+  private customer = customerModel;
   private payment = Payment;
   public processLocalTransfer = async (customer: ICustomer, body) => {
     const { debitAccount, creditAccount, narration = `Mono fund transfer`, amount } = body as ITransfer;

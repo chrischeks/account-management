@@ -1,10 +1,9 @@
 import { NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { getRepository } from 'typeorm';
 import UniversalController from '@/universal/universal.controller';
 import { DataStoredInToken } from '@/universal/interfaces/token.interface';
 import { RequestWithCustomer } from '@/universal/interfaces/request.interface';
-import Customer from '@/customer/customer.schema';
+import customerModel from '@/customer/customer.model';
 
 const { JWTSECRET } = process.env;
 
@@ -13,14 +12,13 @@ const authMiddleware = async (req: RequestWithCustomer, res: Response, next: Nex
   const controller = new UniversalController();
   try {
     const Authorization = req.cookies['Authorization'] || req.header('Authorization')?.split('Bearer ')[1] || null;
-    console.log(Authorization, 'mmmmmm');
 
     if (Authorization) {
       const secretKey: string = JWTSECRET;
       const verificationResponse = (await jwt.verify(Authorization, secretKey)) as DataStoredInToken;
       const _id = verificationResponse._id;
 
-      const foundUser = await Customer.findById(_id);
+      const foundUser = await customerModel.findById(_id);
       if (foundUser) {
         req.customer = foundUser;
         next();
@@ -31,8 +29,6 @@ const authMiddleware = async (req: RequestWithCustomer, res: Response, next: Nex
       await controller.controllerResponseHandler({ ...auth, message: 'Authentication token missing.' }, req, res);
     }
   } catch (error) {
-    console.log(1111111111);
-
     await controller.controllerResponseHandler({ ...auth, message: 'Wrong/expired authentication token.' }, req, res);
   }
 };

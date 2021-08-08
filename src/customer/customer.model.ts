@@ -1,8 +1,8 @@
-import { Schema, model } from 'mongoose';
+import { ICustomer } from '@/universal/interfaces/customer.interface';
+import { Schema, model, Document } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
-import { ICustomer } from './customer.interface';
 
-export const CustomerSchema = new Schema(
+export const customerSchema: Schema = new Schema(
   {
     name: String,
     password: String,
@@ -20,8 +20,8 @@ export const CustomerSchema = new Schema(
   { timestamps: true },
 );
 
-CustomerSchema.plugin(mongoosePaginate);
+customerSchema.plugin(mongoosePaginate);
 
-const Customer = model<ICustomer>('customers', CustomerSchema);
+const customerModel = model<ICustomer & Document>('customers', customerSchema);
 
-export default Customer;
+export default customerModel;
