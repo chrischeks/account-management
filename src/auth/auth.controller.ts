@@ -1,9 +1,9 @@
 import { NextFunction, Response } from 'express';
-import UniversalController from '@/universal/universal.controller';
-import { RequestWithCustomer } from '@/universal/interfaces/request.interface';
+import { RequestWithCustomer } from '@/@universal/interfaces/request.interface';
 import AuthService from './auth.service';
 import { SignInDTO } from './auth.dto';
-import { CreateCustomerDTO } from '@/universal/dto/customer.dto';
+import { CreateCustomerDTO } from '@/@universal/dto/customer.dto';
+import UniversalController from '@/@universal/universal.controller';
 
 class AuthController extends UniversalController {
   public authService = new AuthService();

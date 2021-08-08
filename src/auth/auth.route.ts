@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import Route from '@/universal/interfaces/route.interface';
-import validationMiddleware from '@/middlewares/validation.middleware';
+import Route from '@/@universal/interfaces/route.interface';
+import validationMiddleware from '@/@universal/middlewares/validation.middleware';
 import { SignInDTO } from './auth.dto';
-import { CreateCustomerDTO } from '@/universal/dto/customer.dto';
+import { CreateCustomerDTO } from '@/@universal/dto/customer.dto';
 import AuthController from './auth.controller';
 
 class AuthRoute implements Route {

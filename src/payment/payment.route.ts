@@ -1,13 +1,10 @@
 import { Router } from 'express';
-import Route from '@/universal/interfaces/route.interface';
-import authMiddleware from '@/middlewares/auth.middleware';
-import verifyKey from '@/middlewares/verify.middleware';
-import { isAdmin } from '@/middlewares/admin.middleware';
-import CustomerController from '@/customer/customer.controller';
-import validationMiddleware from '@/middlewares/validation.middleware';
+import Route from '@/@universal/interfaces/route.interface';
+import authMiddleware from '@/@universal/middlewares/auth.middleware';
+import validationMiddleware from '@/@universal/middlewares/validation.middleware';
 import PaymentController from './payment.controller';
 import { TransferDTO } from './payment.dto';
-import { AccountNumberDTO } from '@/universal/dto/account.dto';
+import { AccountNumberDTO } from '@/@universal/dto/account.dto';
 
 class PaymentRoute implements Route {
   public paymentPath = '/payment';

@@ -1,5 +1,5 @@
-import { ICustomer } from '@/universal/interfaces/customer.interface';
-import UniversalService from '@/universal/universal.service';
+import { ICustomer } from '@/@universal/interfaces/customer.interface';
+import UniversalService from '@/@universal/universal.service';
 import { AccountOpenDTO } from './customer.dto';
 import customerModel from './customer.model';
 

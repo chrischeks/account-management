@@ -1,8 +1,8 @@
-import { RequestWithCustomer } from '@/universal/interfaces/request.interface';
-import UniversalController from '@/universal/universal.controller';
+import { RequestWithCustomer } from '@/@universal/interfaces/request.interface';
 import { plainToClass } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
 import { RequestHandler } from 'express';
+import UniversalController from '../universal.controller';
 
 const validationMiddleware = (
   type: any,

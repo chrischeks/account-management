@@ -6,11 +6,11 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import compression from 'compression';
-import Routes from '@/universal/interfaces/route.interface';
-import errorMiddleware from '@middlewares/error.middleware';
-import { logger, stream } from '@utils/logger';
-import notFound from './middlewares/not-found.middleware';
-import { connectMongo } from './@core/mongo.database';
+import Routes from '@/@universal/interfaces/route.interface';
+import errorMiddleware from '@/@universal/middlewares/error.middleware';
+import { logger, stream } from '@/@universal/logger';
+import notFound from './@universal/middlewares/not-found.middleware';
+import { connectMongo } from './@universal/mongo.database';
 
 class App {
   public app: express.Application;

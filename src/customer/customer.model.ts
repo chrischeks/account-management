@@ -1,4 +1,4 @@
-import { ICustomer } from '@/universal/interfaces/customer.interface';
+import { ICustomer } from '@/@universal/interfaces/customer.interface';
 import { Schema, model, Document } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 

@@ -1,11 +1,10 @@
 import * as bcrypt from 'bcrypt';
-import UniversalService from '@/universal/universal.service';
-import { DataStoredInToken, TokenData } from '@/universal/interfaces/token.interface';
+import UniversalService from '@/@universal/universal.service';
 import jwt from 'jsonwebtoken';
 import customerModel from '@/customer/customer.model';
-import { ISignIn } from './auth.interface';
-import { ICustomer } from '@/universal/interfaces/customer.interface';
-import { CreateCustomerDTO } from '@/universal/dto/customer.dto';
+import { DataStoredInToken, ISignIn, TokenData } from './auth.interface';
+import { ICustomer } from '@/@universal/interfaces/customer.interface';
+import { CreateCustomerDTO } from '@/@universal/dto/customer.dto';
 const { JWTSECRET } = process.env;
 
 class AuthService extends UniversalService {

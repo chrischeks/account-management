@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import Route from '@/universal/interfaces/route.interface';
-import authMiddleware from '@/middlewares/auth.middleware';
+import Route from '@/@universal/interfaces/route.interface';
+import authMiddleware from '@/@universal/middlewares/auth.middleware';
 import CustomerController from '@/customer/customer.controller';
-import validationMiddleware from '@/middlewares/validation.middleware';
+import validationMiddleware from '@/@universal/middlewares/validation.middleware';
 import { AccountOpenDTO } from './customer.dto';
-import { AccountNumberDTO } from '@/universal/dto/account.dto';
+import { AccountNumberDTO } from '@/@universal/dto/account.dto';
 
 class CustomerRoute implements Route {
   public userPath = '/customer';
