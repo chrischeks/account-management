@@ -1,6 +1,6 @@
-import { Request } from 'express';
-import { ICustomer } from './customer.interface';
+// import { Request } from 'express';
+// import { ICustomer } from './customer.interface';
 
-export interface RequestWithCustomer extends Request {
-  customer: ICustomer;
-}
+// export interface RequestWithCustomer extends Request {
+//   customer: ICustomer;
+// }

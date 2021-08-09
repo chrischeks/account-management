@@ -7,8 +7,6 @@ class CustomerService extends UniversalService {
   public customer = customerModel;
 
   public processAccountOpening = async (customer: ICustomer, body: AccountOpenDTO) => {
-    console.log('nnnnnnnnnnnnnnnnn');
-
     let { email, account } = customer;
     const { accountType } = body;
     const found = account.find(x => x.accountType === accountType);

@@ -15,41 +15,26 @@ import errorMiddleware from '@/@universal/middlewares/error.middleware';
 import notFound from './@universal/middlewares/not-found.middleware';
 import { dbConnection } from './@universal/database/mongo.database';
 import { logger, stream } from './@universal/logger/logger';
-import rateLimit = require('express-rate-limit');
-import MongoStore = require('rate-limit-mongo');
 import config from 'config';
-const { MONGODB_URL, PORT, limiterConfig } = config.get('config');
-const { max, expireTimeMs } = limiterConfig;
+import { limiter } from './@universal/rate-limiter/mongoexpress.limiter';
+const { log, cors: corsConfig } = config.get('config');
+const { format } = log;
+const { origin, credentials } = corsConfig;
 
 class App {
   public app: express.Application;
   public port: string | number;
   public env: string;
-  private limiter: any;
 
   constructor(routes: Routes[]) {
     this.app = express();
-    this.port = PORT || 3111;
+    this.port = process.env.PORT || 3111;
     this.env = process.env.NODE_ENV || 'development';
     this.connectToDatabase();
-    this.initializeRatelimiter();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
     this.initializeRouteNotFound();
-  }
-
-  private initializeRatelimiter() {
-    this.limiter = rateLimit({
-      store: new MongoStore({
-        uri: MONGODB_URL,
-        expireTimeMs: Number(expireTimeMs),
-        errorHandler: console.error.bind(null, 'rate-limit-mongo'),
-      }),
-      max: Number(max),
-      windowMs: Number(expireTimeMs),
-      message: `You have made too many server requests, try again in an hour`,
-    });
   }
 
   public getServer() {
@@ -74,14 +59,9 @@ class App {
   }
 
   private initializeMiddlewares() {
-    if (this.env === 'production') {
-      this.app.use(morgan('combined', { stream }));
-      this.app.use(cors());
-    } else {
-      this.app.use(morgan('dev', { stream }));
-      this.app.use(cors({ origin: true, credentials: true }));
-    }
-    this.app.use(this.limiter);
+    this.app.use(limiter);
+    this.app.use(morgan(format, { stream }));
+    this.app.use(cors({ origin, credentials }));
     this.app.use(hpp());
     this.app.use(helmet());
     this.app.use(compression());

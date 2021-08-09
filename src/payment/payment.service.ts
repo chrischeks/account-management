@@ -3,15 +3,19 @@ import UniversalService from '@/@universal/service/universal.service';
 import { ITransfer } from './payment.interface';
 import mongoose from 'mongoose';
 import customerModel from '@/customer/customer.model';
-import Payment from './payment.schema';
+import paymentModel from './payment.model';
 import { ICustomer } from '@/@universal/interfaces/customer.interface';
+import bcrypt from 'bcrypt';
 
 class PaymentService extends UniversalService {
   private customer = customerModel;
-  private payment = Payment;
+  private payment = paymentModel;
+
   public processLocalTransfer = async (customer: ICustomer, body) => {
-    const { debitAccount, creditAccount, narration = `Mono fund transfer`, amount } = body as ITransfer;
-    let { email } = customer;
+    const { debitAccount, creditAccount, narration = `Mono fund transfer`, amount, pin: xpin } = body as ITransfer;
+    let { email, pin } = customer;
+    const validPin = await bcrypt.compare(xpin, pin);
+    if (!validPin) return this.failureResponse('Pin mismatch');
     email = email.toLowerCase();
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -62,12 +66,12 @@ class PaymentService extends UniversalService {
       {
         $facet: {
           metadata: [{ $count: 'total' }],
-          data: [{ $sort: { createdAt: -1 } }, { $skip: page }, { $limit: limit }],
+          result: [{ $sort: { createdAt: -1 } }, { $skip: page }, { $limit: limit }],
         },
       },
       {
         $project: {
-          data: 1,
+          result: 1,
           // Get total from the first element of the metadata array
           total: { $arrayElemAt: ['$metadata.total', 0] },
         },

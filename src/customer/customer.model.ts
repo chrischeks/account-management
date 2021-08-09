@@ -1,6 +1,5 @@
 import { ICustomer } from '@/@universal/interfaces/customer.interface';
 import { Schema, model, Document } from 'mongoose';
-import mongoosePaginate from 'mongoose-paginate-v2';
 
 export const customerSchema: Schema = new Schema(
   {
@@ -14,13 +13,12 @@ export const customerSchema: Schema = new Schema(
         accountNumber: String,
         balance: { type: Number, default: 0.0 },
         denomination: { type: String, default: 'kobo' },
+        createdAt: { type: Date, default: new Date() },
       },
     ],
   },
   { timestamps: true },
 );
-
-customerSchema.plugin(mongoosePaginate);
 
 const customerModel = model<ICustomer & Document>('customers', customerSchema);
 

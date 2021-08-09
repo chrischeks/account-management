@@ -5,4 +5,5 @@ export interface ITransfer {
   debitAccount: string;
   narration: string;
   charge?: number;
+  pin: string;
 }
