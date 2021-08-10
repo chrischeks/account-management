@@ -9,7 +9,7 @@ class CustomerService extends UniversalService {
   public processAccountOpening = async (customer: ICustomer, body: AccountOpenDTO) => {
     let { email, account } = customer;
     const { accountType } = body;
-    const found = account.find(x => x.accountType === accountType);
+    const found = account.find(acc => acc.accountType === accountType);
     if (found) return this.failureResponse(`You already have a ${accountType} account`);
     const newAccount = { accountNumber: await this.generateAccountNumber(), accountType };
     const createAccount = await this.customer.updateOne({ email }, { $push: { account: newAccount } });

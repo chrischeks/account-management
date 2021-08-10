@@ -19,5 +19,6 @@ export class TransferDTO implements ITransfer {
 
   @IsString()
   @IsOptional()
+  @Length(3, 100)
   narration: string;
 }

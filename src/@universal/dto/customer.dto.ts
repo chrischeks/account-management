@@ -14,9 +14,10 @@ export class CreateCustomerDTO implements ICustomer {
   pin: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Name is required' })
   readonly name: string;
 
+  @IsNotEmpty({ message: 'Email is required' })
   @IsEmail()
   readonly email: string;
 }

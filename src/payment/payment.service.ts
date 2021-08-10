@@ -54,12 +54,12 @@ class PaymentService extends UniversalService {
   };
 
   public processTransactionHistory = async (customer: ICustomer, accountNumber, query) => {
-    let { email } = customer;
-    email = email.toLowerCase();
+    let { account } = customer;
+    const customerAccount = account.find(acc => acc.accountNumber === accountNumber);
+    if (!customerAccount) return this.failureResponse('Operation not allowed');
     let { limit, page } = query;
-    console.log(email, accountNumber, limit, page);
     limit = Number(limit) || 10;
-    page = Number(page) || 1;
+    page = page <= 0 ? 0 : Number(page - 1);
     const transactions = await this.payment.aggregate([
       { $match: { $or: [{ creditAccount: accountNumber }, { debitAccount: accountNumber }] } },
       { $addFields: { isDebit: { $cond: { if: { $eq: ['$debitAccount', accountNumber] }, then: true, else: false } } } },
