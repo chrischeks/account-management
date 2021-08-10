@@ -11,10 +11,12 @@ export class TransferDTO implements ITransfer {
 
   @IsString()
   @IsNotEmpty()
+  @Length(10, 10)
   readonly debitAccount: string;
 
   @IsString()
   @IsNotEmpty()
+  @Length(10, 10)
   readonly creditAccount: string;
 
   @IsString()

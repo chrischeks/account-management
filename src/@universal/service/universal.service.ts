@@ -10,9 +10,7 @@ class UniversalService {
   };
 
   protected generateAccountNumber = async (): Promise<string> => {
-    const dateLast5 = `${Date.now()}`.substring(8);
-    const randomNum = `${Math.floor(Math.random() * 100000)}`;
-    return `${dateLast5}${randomNum}`;
+    return `${Math.floor(Math.random() * 9000000000) + 1000000000}`;
   };
 }
 export default UniversalService;

@@ -49,6 +49,7 @@ describe('Testing Auth', () => {
       const { password } = baseData;
       customers.findOne = jest.fn().mockReturnValue({
         password: await bcrypt.hash(password, 10),
+        account: '5653782736',
       });
 
       (mongoose as any).connect = jest.fn();

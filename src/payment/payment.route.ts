@@ -7,7 +7,7 @@ import { TransferDTO } from './payment.dto';
 import { AccountNumberDTO } from '@/@universal/dto/account.dto';
 
 class PaymentRoute implements Route {
-  public paymentPath = '/payment';
+  public path = '/payment';
 
   public router = Router();
   public paymentController = new PaymentController();
@@ -17,9 +17,9 @@ class PaymentRoute implements Route {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.paymentPath}/transfer`, authMiddleware, validationMiddleware(TransferDTO, 'body'), this.paymentController.localTransfer);
+    this.router.post(`${this.path}/transfer`, authMiddleware, validationMiddleware(TransferDTO, 'body'), this.paymentController.localTransfer);
     this.router.get(
-      `${this.paymentPath}/transactions/:accountNumber`,
+      `${this.path}/transactions/:accountNumber`,
       authMiddleware,
       validationMiddleware(AccountNumberDTO, 'params'),
       this.paymentController.transactionHistory,

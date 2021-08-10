@@ -8,8 +8,8 @@ import { ICustomer } from '@/@universal/interfaces/customer.interface';
 import bcrypt from 'bcrypt';
 
 class PaymentService extends UniversalService {
-  private customer = customerModel;
-  private payment = paymentModel;
+  public customer = customerModel;
+  public payment = paymentModel;
 
   public processLocalTransfer = async (customer: ICustomer, body) => {
     const { debitAccount, creditAccount, narration = `Mono fund transfer`, amount, pin: xpin } = body as ITransfer;

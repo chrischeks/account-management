@@ -11,15 +11,9 @@ const authMiddleware = async (req: Request & { customer: ICustomer }, res: Respo
   const controller = new UniversalController();
   try {
     const Authorization = req.header('Authorization')?.split('Bearer ')[1] || null;
-    console.log(Authorization, 'Authorization');
-
     if (Authorization) {
       const secretKey: string = config.get('config.secretKey');
-      console.log(secretKey, 'secretKey');
-
       const verificationResponse = jwt.verify(Authorization, secretKey) as DataStoredInToken;
-      console.log(verificationResponse, 'verificationResponse');
-
       const _id = verificationResponse._id;
 
       const foundUser = await customerModel.findById(_id);
@@ -33,8 +27,6 @@ const authMiddleware = async (req: Request & { customer: ICustomer }, res: Respo
       await controller.controllerResponseHandler({ ...auth, message: 'Authentication token missing.' }, req, res);
     }
   } catch (error) {
-    console.log(error);
-
     await controller.controllerResponseHandler({ ...auth, message: 'Wrong/expired authentication token.' }, req, res);
   }
 };

@@ -24,7 +24,7 @@ class AuthService extends UniversalService {
   public processSignIn = async (customerData: ISignIn) => {
     let { password, email } = customerData;
     email = email.toLowerCase();
-    const foundUser: ICustomer = await this.customer.findOne({ email }, { password: 1 });
+    const foundUser: ICustomer = await this.customer.findOne({ email }, { password: 1, account: 1 });
     if (!foundUser) return this.failureResponse('Invalid email or password.');
     const isPasswordMatching: boolean = await bcrypt.compare(password, foundUser.password);
     if (!isPasswordMatching) return this.failureResponse('Invalid mobile number or password.');
@@ -34,8 +34,6 @@ class AuthService extends UniversalService {
 
   public async createToken(customer: ICustomer): Promise<TokenData> {
     const dataStoredInToken: DataStoredInToken = { _id: customer._id };
-    console.log(dataStoredInToken, 'dataStoredInToken');
-
     const secretKey: string = config.get('config.secretKey');
     const expiresIn: string = '1d';
     return { expiresIn, token: jwt.sign(dataStoredInToken, secretKey, { expiresIn }) };

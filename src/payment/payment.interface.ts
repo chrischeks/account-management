@@ -3,7 +3,7 @@ export interface ITransfer {
   amount: number;
   creditAccount: string;
   debitAccount: string;
-  narration: string;
+  narration?: string;
   charge?: number;
   pin: string;
 }
