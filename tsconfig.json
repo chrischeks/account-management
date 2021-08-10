@@ -9,9 +9,7 @@
         "typeRoots": [
             "node_modules/@types"
         ],
-        "types": [
-            "@types/jest"
-        ],
+        
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
@@ -70,6 +68,7 @@
         ".env"
     ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "**/test/*.test.ts"
     ]
 }
