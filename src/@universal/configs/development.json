@@ -1,7 +1,7 @@
 {
     "config":{
     "env": "development",
-    "MONGODB_URL":"mongodb+srv://AccionAdmin:AccionPassword@cluster0.sgtkq.mongodb.net/mono?authSource=admin&replicaSet=atlas-f55ash-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true",
+    "MONGODB_URL":"mongodb+srv://cheks:CHEKSDb2021@cluster0.tmxlw.mongodb.net/mono-dev",
     "secretKey": "This+Key@Is=Strong-Enough*For&Production#but_Good?Enough()For^This$Assessment",
     "log": {
         "format": "dev",

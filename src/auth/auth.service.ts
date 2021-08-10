@@ -12,13 +12,18 @@ class AuthService extends UniversalService {
 
   public processCreateCustomer = async (customer: CreateCustomerDTO) => {
     let { pin, password, email, name } = customer;
-    pin = await bcrypt.hash(pin, 10);
-    password = await bcrypt.hash(password, 10);
-    email = email.toLowerCase();
-    const account = [{ accountType: 'mono-savings', accountNumber: await this.generateAccountNumber() }];
-    const createUser: ICustomer = await this.customer.create({ pin, password, account, name, email });
-    if (!createUser) return this.failureResponse('Signup failed');
-    return this.successResponse(account[0]);
+    try {
+      pin = await bcrypt.hash(pin, 10);
+      password = await bcrypt.hash(password, 10);
+      email = email.toLowerCase();
+      const account = [{ accountType: 'mono-savings', accountNumber: await this.generateAccountNumber() }];
+      const createUser: ICustomer = await this.customer.create({ pin, password, account, name, email });
+      if (!createUser) return this.failureResponse('Signup failed');
+      return this.successResponse(account[0]);
+    } catch (error) {
+      const { message } = error;
+      if (message.includes('duplicate')) return this.failureResponse(`A customer with email ${email} already exist`);
+    }
   };
 
   public processSignIn = async (customerData: ISignIn) => {

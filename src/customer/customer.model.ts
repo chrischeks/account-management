@@ -6,7 +6,7 @@ export const customerSchema: Schema = new Schema(
     name: String,
     password: String,
     pin: String,
-    email: String,
+    email: { unique: true, type: String },
     account: [
       {
         accountType: { type: String, default: 'mono-savings' },
