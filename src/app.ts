@@ -59,6 +59,7 @@ class App {
   }
 
   private initializeMiddlewares() {
+    this.app.set('trust proxy', 1);
     this.app.use(limiter);
     this.app.use(morgan(format, { stream }));
     this.app.use(cors({ origin, credentials }));

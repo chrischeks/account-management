@@ -8,9 +8,9 @@ class CustomerController extends UniversalController {
 
   public openAccount = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { body } = req;
+      const { body, customer } = req;
       const userData: AccountOpenDTO = body;
-      const response = await this.customerService.processAccountOpening(req['customer'], userData);
+      const response = await this.customerService.processAccountOpening(customer, userData);
       await this.controllerResponseHandler(response, req, res);
     } catch (error) {
       await this.controllerErrorHandler(req, res, error);

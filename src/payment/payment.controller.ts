@@ -7,9 +7,9 @@ class PaymentController extends UniversalController {
   paymentService = new PaymentService();
   public localTransfer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { body } = req;
+      const { body, customer } = req;
       const userData: TransferDTO = body;
-      const response = await this.paymentService.processLocalTransfer(req['customer'], userData);
+      const response = await this.paymentService.processLocalTransfer(customer, userData);
       await this.controllerResponseHandler(response, req, res);
     } catch (error) {
       await this.controllerErrorHandler(req, res, error);
@@ -18,9 +18,9 @@ class PaymentController extends UniversalController {
 
   public transactionHistory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { params, query } = req;
+      const { params, query, customer } = req;
       const userData: string = params.accountNumber;
-      const response = await this.paymentService.processTransactionHistory(req['customer'], userData, query);
+      const response = await this.paymentService.processTransactionHistory(customer, userData, query);
       await this.controllerResponseHandler(response, req, res);
     } catch (error) {
       await this.controllerErrorHandler(req, res, error);
